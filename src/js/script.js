@@ -124,7 +124,7 @@
       });
 
       for (let input of thisProduct.formInputs) {
-        input.addEventListener('change', function () {
+        input.addEventListener('change', function () { //nie można bez tej funkcji?
           thisProduct.processOrder();
         });
       }
@@ -159,10 +159,19 @@
 
           //zad2
 
-          //console.log(formData.paramId);
-          // if (formData.includes(paramId) = true){
+          // console.log(formData.indexOf(option));
+          // if (formData.indexOf(option) !== -1 {
           //   console.log('aagewwgw');
           // }
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            if (option.default == true) {
+              console.log('true');
+            } else {
+              price = price + option.price;
+            }
+          } else if (option.default == true) {
+            price = price - option.price;
+          }
 
           //zad3
           // const image = thisProduct.imageWrapper.querySelector(paramId + - + optionId);
@@ -192,15 +201,35 @@
       console.log('constructor arguments:', element);
 
       thisWidget.getElements(element);
-      getElements(element) {
-        const thisWidget = this;
-
-        thisWidget.element = element;
-        thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
-        thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
-        thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
-      }
+      thisWidget.setValue(thisWidget.input.value);
     }
+    getElements(element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+
+    setValue(value) {
+      const thisWidget = this;
+
+      const newValue = parseInt(value); //gdzie jest powiedziane ze to jest w formularzu
+
+      //TODO : add validation
+      if (thisWidget.value !== newValue && !isNaN(newValue)) { //po co ta pierwsza czesc ifa
+        thisWidget.value = newValue;
+      }
+      thisWidget.input.value = thisWidget.value;
+      console.log(thisWidget.input.value);
+    }
+
+    // initActions(){
+    //   thisWidget.input.addEventListener('change', function (){setValue(thisWidget.input.value)});
+    //   thisWidget.linkDecrease.addEventListener('click', thisWidget.linkDecrease.preventDefault());
+
+    // }
   }
   const app = {
     initMenu: function () {
