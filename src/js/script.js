@@ -174,11 +174,12 @@
           }
 
           //zad3
-          // const image = thisProduct.imageWrapper.querySelector(paramId + - + optionId);
-          // console.log(image);
-          // if (image !== null) {
-          //   console.log('geegwewgegw');
-          // }
+          const image = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          if (image !== null && formData[paramId] && formData[paramId].includes(optionId)) {
+            image.classList.add(classNames.menuProduct.imageVisible);
+          } else if (image !== null && formData[paramId] && !formData[paramId].includes(optionId)) {
+            image.classList.remove(classNames.menuProduct.imageVisible);
+          }
         }
       }
 
