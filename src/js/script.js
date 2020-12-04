@@ -63,7 +63,18 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
+
+      thisWidget.getElements(element);
+      getElements(element) {
+        const thisWidget = this;
+
+        thisWidget.element = element;
+        thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+        thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+        thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+      }
     }
     renderInMenu() {
       const thisProduct = this;
@@ -87,6 +98,7 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
     }
 
     initAccordion() {
@@ -114,7 +126,7 @@
 
     initOrderForm() {
       const thisProduct = this;
-      console.log('initOrderForm');
+      //console.log('initOrderForm');
 
       thisProduct.form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -147,7 +159,7 @@
       for (let paramId in thisProduct.data.params) {
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);
+        // console.log(paramId, param);
 
         // for every option in this category
         for (let optionId in param.options) {
@@ -157,7 +169,7 @@
 
           //zad2
 
-          console.log(formData.paramId);
+          //console.log(formData.paramId);
           // if (formData.includes(paramId) = true){
           //   console.log('aagewwgw');
           // }
@@ -175,12 +187,26 @@
       thisProduct.priceElem.innerHTML = price;
     }
 
+    initAmountWidget() {
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new amountWidget(thisProduct.amountWidgetElem);
+    }
+  }
+
+  class amountWidget {
+    constructor(element) {
+      const thisWidget = this;
+
+      console.log('amountWidget:', thisWidget);
+      console.log('constructor arguments:', element);
+    }
   }
   const app = {
     initMenu: function () {
       const thisApp = this;
 
-      console.log('thisApp.data:', thisApp.data);
+      // console.log('thisApp.data:', thisApp.data);
 
       for (let productData in thisApp.data.products) { //jak to wchodzi w plik data?
         new Product(productData, thisApp.data.products[productData]); //dlaczego productData ie wyswietla wlasciwosci produktu
