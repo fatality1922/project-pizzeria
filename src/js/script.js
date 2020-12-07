@@ -218,25 +218,31 @@
     setValue(value) {
       const thisWidget = this;
 
-      const newValue = parseInt(value); 
+      const newValue = parseInt(value);
 
       //TODO : add validation
-      if (thisWidget.value !== newValue && !isNaN(newValue) && newValue < 11) { 
+      if (thisWidget.value !== newValue && !isNaN(newValue) && newValue <= settings.amountWidget.defaultMax && newValue >= settings.amountWidget.defaultMin) {
         thisWidget.value = newValue;
       }
       thisWidget.input.value = thisWidget.value;
       console.log(thisWidget.input.value);
     }
 
-    initActions(){
-      const thisWidget = this; 
+    initActions() {
+      const thisWidget = this;
 
-      thisWidget.input.addEventListener('change', function (){
+      thisWidget.input.addEventListener('change', function () {
         thisWidget.setValue(thisWidget.input.value);
       });
 
-      thisWidget.linkDecrease.addEventListener('click', function(){
-        thisWidget.linkDecrease.preventDefault();
+      thisWidget.linkDecrease.addEventListener('click', function () {
+        //event.preventDefault();
+        thisWidget.setValue(thisWidget.input.value - 1);
+      });
+
+      thisWidget.linkIncrease.addEventListener('click', function () {
+        //event.preventDefault();
+        thisWidget.setValue(thisWidget.input.value + 1);
       });
 
     }
