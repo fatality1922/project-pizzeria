@@ -66,6 +66,7 @@
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
     }
+
     renderInMenu() {
       const thisProduct = this;
 
@@ -79,6 +80,7 @@
       /* add element to menu*/
       menuContainer.appendChild(thisProduct.element);
     }
+
     getElements() {
       const thisProduct = this;
 
@@ -101,12 +103,11 @@
         /* prevent default action for event */
         event.preventDefault();
         /* find active product (product that has active class) */
-        const activeProduct = thisProduct.element.querySelector('active');
+        const allActiveProducts = document.querySelectorAll('.product.active');
         /* if there is active product and it's not thisProduct.element, remove class active from it */
-        if (activeProduct !== null) { //dlaczego bez tego nie dzialalo i pokazywalo null w konsoli
+        for (let activeProduct of allActiveProducts) {
           if (activeProduct !== thisProduct.element) {
-            activeProduct.classList.toggle('active');
-            thisProduct.element.classList.remove('active');
+            activeProduct.classList.remove('active');
           }
         }
         /* toggle active class on thisProduct.element */
@@ -124,7 +125,7 @@
       });
 
       for (let input of thisProduct.formInputs) {
-        input.addEventListener('change', function () { //nie można bez tej funkcji?
+        input.addEventListener('change', function () { //dlaczego nie można bez tej funkcji?
           thisProduct.processOrder();
         });
       }
@@ -155,7 +156,7 @@
         for (let optionId in param.options) {
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
-          console.log(optionId, option);
+          //console.log(optionId, option);
 
           //zad2
 
@@ -165,7 +166,7 @@
           // }
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             if (option.default == true) {
-              console.log('true');
+              //console.log('true');
             } else {
               price = price + option.price;
             }
@@ -203,6 +204,7 @@
 
       thisWidget.getElements(element);
       thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
     }
     getElements(element) {
       const thisWidget = this;
@@ -216,21 +218,28 @@
     setValue(value) {
       const thisWidget = this;
 
-      const newValue = parseInt(value); //gdzie jest powiedziane ze to jest w formularzu
+      const newValue = parseInt(value); 
 
       //TODO : add validation
-      if (thisWidget.value !== newValue && !isNaN(newValue)) { //po co ta pierwsza czesc ifa
+      if (thisWidget.value !== newValue && !isNaN(newValue) && newValue < 11) { 
         thisWidget.value = newValue;
       }
       thisWidget.input.value = thisWidget.value;
       console.log(thisWidget.input.value);
     }
 
-    // initActions(){
-    //   thisWidget.input.addEventListener('change', function (){setValue(thisWidget.input.value)});
-    //   thisWidget.linkDecrease.addEventListener('click', thisWidget.linkDecrease.preventDefault());
+    initActions(){
+      const thisWidget = this; 
 
-    // }
+      thisWidget.input.addEventListener('change', function (){
+        thisWidget.setValue(thisWidget.input.value);
+      });
+
+      thisWidget.linkDecrease.addEventListener('click', function(){
+        thisWidget.linkDecrease.preventDefault();
+      });
+
+    }
   }
   const app = {
     initMenu: function () {
