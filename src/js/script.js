@@ -68,7 +68,7 @@
 
   const settings = {
     amountWidget: {
-      defaultValue: 1,
+      defaultValue: 1, 
       defaultMin: 1,
       defaultMax: 9,
     }, // CODE CHANGED
@@ -167,6 +167,7 @@
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -221,6 +222,7 @@
       // update calculated price in the HTML
       price *= thisProduct.amountWidget.value;
 
+      const priceSingle = price;
       thisProduct.priceElem.innerHTML = price;
     }
 
@@ -232,6 +234,26 @@
         thisProduct.processOrder();
       });
     }
+
+    addToCart() {
+      const thisProduct = this;
+      thisProduct.prepareCartProduct();
+      app.cart.add(thisProduct.prepareCartProduct(thisProduct));
+    }
+
+    prepareCartProduct() { /// tu nie dziala, dodaje tylko informacje o ID
+      const thisProduct = this;
+
+      const productSummary = {
+        id: thisProduct.id,
+        name: thisProduct.name,
+        amount: thisProduct.amount,
+        priceSingle: thisProduct.priceSingle,
+        price: thisProduct.priceSingle * thisProduct.amount,
+        params: {},
+      };
+      return (productSummary);
+    }
   }
 
   class amountWidget {
@@ -242,7 +264,7 @@
       console.log('constructor arguments:', element);
 
       thisWidget.getElements(element);
-      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.setValue(settings.amountWidget.defaultValue); 
       thisWidget.initActions();
     }
     getElements(element) {
@@ -323,6 +345,12 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct) {
+      //const thisCart = this;
+
+      console.log('adding product', menuProduct);
     }
   }
 
