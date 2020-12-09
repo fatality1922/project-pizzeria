@@ -68,7 +68,7 @@
 
   const settings = {
     amountWidget: {
-      defaultValue: 1, 
+      defaultValue: 1,
       defaultMin: 1,
       defaultMax: 9,
     }, // CODE CHANGED
@@ -220,10 +220,12 @@
       }
 
       // update calculated price in the HTML
+      const priceSingle = price;
       price *= thisProduct.amountWidget.value;
 
-      const priceSingle = price;
+
       thisProduct.priceElem.innerHTML = price;
+      return priceSingle;
     }
 
     initAmountWidget() {
@@ -238,23 +240,53 @@
     addToCart() {
       const thisProduct = this;
       thisProduct.prepareCartProduct();
-      app.cart.add(thisProduct.prepareCartProduct(thisProduct));
+      app.cart.add(thisProduct.prepareCartProduct());
     }
 
-    prepareCartProduct() { /// tu nie dziala, dodaje tylko informacje o ID
+    prepareCartProduct() { 
       const thisProduct = this;
 
       const productSummary = {
         id: thisProduct.id,
-        name: thisProduct.name,
-        amount: thisProduct.amount,
-        priceSingle: thisProduct.priceSingle,
-        price: thisProduct.priceSingle * thisProduct.amount,
-        params: {},
+        name: thisProduct.data.name,
+        amount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.processOrder(),
+        price: thisProduct.processOrder() * thisProduct.amountWidget.value,
+        params: thisProduct.prepareCartProductParams(), //cos zle jest, za duzo obiektow zwraca
       };
       return (productSummary);
     }
+
+    prepareCartProductParams() {
+      const thisProduct = this;
+
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      const params = {};
+      for (let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+
+        params[paramId] = {
+          name: param.label,
+          options: {}
+        };
+
+        for (let optionId in param.options) {
+          const option = param.options[optionId];
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          if (optionSelected) {
+            params[paramId].options += option;
+          }
+        }
+      }
+      console.log(params);
+      return params;
+    }
   }
+
 
   class amountWidget {
     constructor(element) {
@@ -264,7 +296,7 @@
       console.log('constructor arguments:', element);
 
       thisWidget.getElements(element);
-      thisWidget.setValue(settings.amountWidget.defaultValue); 
+      thisWidget.setValue(settings.amountWidget.defaultValue);
       thisWidget.initActions();
     }
     getElements(element) {
