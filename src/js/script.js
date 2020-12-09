@@ -176,7 +176,6 @@
 
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData', formData);
 
       // set price to default price
       let price = thisProduct.data.price;
@@ -282,7 +281,6 @@
           }
         }
       }
-      console.log(params);
       return params;
     }
   }
@@ -291,9 +289,6 @@
   class amountWidget {
     constructor(element) {
       const thisWidget = this;
-
-      console.log('amountWidget:', thisWidget);
-      console.log('constructor arguments:', element);
 
       thisWidget.getElements(element);
       thisWidget.setValue(settings.amountWidget.defaultValue);
@@ -319,7 +314,6 @@
         this.announce();
       }
       thisWidget.input.value = thisWidget.value;
-      console.log(thisWidget.input.value);
     }
 
     announce() {
@@ -368,7 +362,7 @@
       thisCart.dom = {};
 
       thisCart.dom.wrapper = element;
-      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger); //ta linia jakis ferment siejei nie jest funkcja
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
 
@@ -380,18 +374,58 @@
       });
     }
 
-    add(params) {
+    add(menuProduct) {
       const thisCart = this;
 
       /* generate HTML based on template*/
-      const generatedHTML = templates.cartProduct(params);
+      const generatedHTML = templates.cartProduct(menuProduct);
 
       /* create DOM element */
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
       /* add element to cart */
       thisCart.dom.productList.appendChild(generatedDOM);
-      console.log(params);
-      thisCart.products.push(new Cart(params, generatedDOM));
+
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM)); //tu jest cos nie tak do zad 9.4, edit z 9.5: nie zapisuje dwoch elementow z dodania produktow
+    }
+  }
+
+  class CartProduct {
+    constructor(menuProduct, element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.price = menuProduct.price;
+      thisCartProduct.params = menuProduct.params;
+
+      thisCartProduct.getElements(element);
+      thisCartProduct.initAmountWidget(thisCartProduct.dom.amountWidget);
+    }
+
+    getElements(element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom = {};
+
+      thisCartProduct.dom.wrapper = element;
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+      //thisCartProduct.input = thisCartProduct.element.querySelector(select.cartProduct.amount.input);
+
+    }
+
+    initAmountWidget() {       //tu nie dziala zmiana ceny
+      const thisCartProduct = this;
+
+      thisCartProduct.amountWidget = new amountWidget(thisCartProduct.dom.amountWidget);
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function () {
+        thisCartProduct.amount = thisCartProduct.amountWidget;
+        thisCartProduct.price = thisCartProduct.dom.price; // nie działa , wg modulu powinna byc juz zaktualizowana
+      });
     }
   }
 
