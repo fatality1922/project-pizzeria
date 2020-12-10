@@ -319,7 +319,9 @@
     announce() {
       const thisWidget = this;
 
-      const event = new Event('updated');
+      const event = new CustomEvent('updated', {
+        bubbles: true
+      });
       thisWidget.element.dispatchEvent(event);
     }
 
@@ -364,6 +366,11 @@
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger); //ta linia jakis ferment siejei nie jest funkcja
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+
+      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelectorAll(select.cart.deliveryFee); //te referencje sa ok? 
+      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.subtotalPrice);
+      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
+      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelectorAll(select.cart.totalNumber);
     }
 
     initActions() {
@@ -371,6 +378,13 @@
 
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+        thisCart.dom.productList.addEventListener('updated', function () {
+          thisCart.update();
+        });
+      });
+
+      thisCart.dom.productList.addEventListener('remove', function (event) {
+        thisCart.remove(event.detail.cartProduct);
       });
     }
 
@@ -386,6 +400,42 @@
       thisCart.dom.productList.appendChild(generatedDOM);
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM)); //tu jest cos nie tak do zad 9.4, edit z 9.5: nie zapisuje dwoch elementow z dodania produktow
+      thisCart.update();
+    }
+
+    update() {
+      const thisCart = this;
+
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
+
+      for (let cartProduct of thisCart.products) {
+        thisCart.totalNumber += cartProduct.amount;
+        thisCart.subtotalPrice += cartProduct.price * cartProduct.amount;
+      }
+      thisCart.totalPrice = 0; //to jest wlasciwosc czy stala? te wyzej to tez wlasciwosci?
+      if (thisCart.subtotalPrice > 0) { //przy dodaniu wiecej niz 1 dolicza przesylke mimo, ze cos w koszyku juz jest, przy 1 sztuce nie
+        thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
+      }
+
+      thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice; //co tu wpisac?
+      thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice;
+      thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
+      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
+
+      console.log('amount , cena koncowa:', thisCart.totalNumber, thisCart.totalPrice);
+    }
+
+    remove (cartProduct){
+      const thisCart = this;
+
+      const index = thisCart.products.indexOf(cartProduct);
+      thisCart.products.splice(index, 1);
+
+      cartProduct.dom.wrapper.remove();
+
+      thisCart.update ();
     }
   }
 
@@ -402,6 +452,7 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget(thisCartProduct.dom.amountWidget);
+      thisCartProduct.initActions();
     }
 
     getElements(element) {
@@ -425,6 +476,31 @@
       thisCartProduct.dom.amountWidget.addEventListener('updated', function () {
         thisCartProduct.amount = thisCartProduct.amountWidget;
         thisCartProduct.price = thisCartProduct.dom.price; // nie działa , wg modulu powinna byc juz zaktualizowana
+      });
+    }
+
+    remove() {
+      const thisCartProduct = this;
+
+      const event = new CustomEvent('remove', {
+        bubbles: true,
+        detail: {
+          cartProduct: thisCartProduct,
+        },
+      });
+      thisCartProduct.dom.wrapper.dispatchEvent(event);
+    }
+
+    initActions() {
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.edit.addEventListener('click', function (event) {
+        event.preventDefault();
+      });
+
+      thisCartProduct.dom.remove.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisCartProduct.remove();
       });
     }
   }
