@@ -291,7 +291,7 @@
       const thisWidget = this;
 
       thisWidget.getElements(element);
-      thisWidget.setValue(settings.amountWidget.defaultValue);
+      thisWidget.setValue(thisWidget.input.value || settings.amountWidget.defaultValue);
       thisWidget.initActions();
     }
     getElements(element) {
@@ -364,13 +364,13 @@
       thisCart.dom = {};
 
       thisCart.dom.wrapper = element;
-      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger); //ta linia jakis ferment siejei nie jest funkcja
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
 
-      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelectorAll(select.cart.deliveryFee); //te referencje sa ok? 
-      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.subtotalPrice);
+      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee); 
+      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
-      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelectorAll(select.cart.totalNumber);
+      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
     }
 
     initActions() {
@@ -399,7 +399,7 @@
       /* add element to cart */
       thisCart.dom.productList.appendChild(generatedDOM);
 
-      thisCart.products.push(new CartProduct(menuProduct, generatedDOM)); //tu jest cos nie tak do zad 9.4, edit z 9.5: nie zapisuje dwoch elementow z dodania produktow
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM)); 
       thisCart.update();
     }
 
@@ -412,22 +412,27 @@
 
       for (let cartProduct of thisCart.products) {
         thisCart.totalNumber += cartProduct.amount;
-        thisCart.subtotalPrice += cartProduct.price * cartProduct.amount;
+        thisCart.subtotalPrice += cartProduct.price;
       }
-      thisCart.totalPrice = 0; //to jest wlasciwosc czy stala? te wyzej to tez wlasciwosci?
-      if (thisCart.subtotalPrice > 0) { //przy dodaniu wiecej niz 1 dolicza przesylke mimo, ze cos w koszyku juz jest, przy 1 sztuce nie
+      thisCart.totalPrice = 0; 
+      if (thisCart.subtotalPrice > 0) { 
         thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
       }
 
-      thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice; //co tu wpisac?
+      // thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice; //co tu wpisac?
+      for (let totalPrice of thisCart.dom.totalPrice) {
+        totalPrice.innerHTML = thisCart.totalPrice;
+      }
+
       thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice;
       thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
       thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
 
+      console.log(thisCart.dom.totalPrice);
       console.log('amount , cena koncowa:', thisCart.totalNumber, thisCart.totalPrice);
     }
 
-    remove (cartProduct){
+    remove(cartProduct) {
       const thisCart = this;
 
       const index = thisCart.products.indexOf(cartProduct);
@@ -435,7 +440,7 @@
 
       cartProduct.dom.wrapper.remove();
 
-      thisCart.update ();
+      thisCart.update();
     }
   }
 
@@ -469,13 +474,14 @@
 
     }
 
-    initAmountWidget() {       //tu nie dziala zmiana ceny
+    initAmountWidget() {       
       const thisCartProduct = this;
 
       thisCartProduct.amountWidget = new amountWidget(thisCartProduct.dom.amountWidget);
       thisCartProduct.dom.amountWidget.addEventListener('updated', function () {
-        thisCartProduct.amount = thisCartProduct.amountWidget;
-        thisCartProduct.price = thisCartProduct.dom.price; // nie działa , wg modulu powinna byc juz zaktualizowana
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount; 
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
       });
     }
 
