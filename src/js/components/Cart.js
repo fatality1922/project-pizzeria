@@ -28,6 +28,8 @@ class Cart {
     thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
     thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
     thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+
+    thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
   }
 
   initActions() {
@@ -42,6 +44,11 @@ class Cart {
 
     thisCart.dom.productList.addEventListener('remove', function (event) {
       thisCart.remove(event.detail.cartProduct);
+    });
+
+    thisCart.dom.form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      thisCart.sendOrder();
     });
   }
 
@@ -67,9 +74,10 @@ class Cart {
     thisCart.totalNumber = 0;
     thisCart.subtotalPrice = 0;
 
-    for (let cartProduct of thisCart.products) {
-      thisCart.totalNumber += cartProduct.amount;
-      thisCart.subtotalPrice += cartProduct.price;
+    for (let product of thisCart.products) {
+      thisCart.totalNumber += product.amount;
+      thisCart.subtotalPrice += product.price;
+      console.log('amount2:', product.amount);
     }
     thisCart.totalPrice = 0;
     if (thisCart.subtotalPrice > 0) {
@@ -87,6 +95,7 @@ class Cart {
 
     console.log(thisCart.dom.totalPrice);
     console.log('amount , cena koncowa:', thisCart.totalNumber, thisCart.totalPrice);
+    
   }
 
   remove(cartProduct) {
@@ -99,6 +108,13 @@ class Cart {
 
     thisCart.update();
   }
+
+  // sendOrder(){
+  //   const thisCart = this;
+
+  //   const url = settings.db.url + '/' + settings.db.order;
+
+  // }
 }
 
 export default Cart;
