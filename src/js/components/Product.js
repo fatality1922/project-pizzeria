@@ -153,10 +153,11 @@ class Product {
     });
   }
 
-  addToCart() {
+  addToCart(){
     const thisProduct = this;
-    thisProduct.prepareCartProduct();
-    //app.cart.add(thisProduct.prepareCartProduct());
+    thisProduct.name = thisProduct.data.name;
+    thisProduct.amount = thisProduct.amountWidget.value;
+
 
     const event = new CustomEvent('add-to-cart', {
       bubbles: true,
@@ -164,8 +165,10 @@ class Product {
         product: thisProduct,
       },
     });
+
     thisProduct.element.dispatchEvent(event);
   }
+
 
   prepareCartProduct() {
     const thisProduct = this;
