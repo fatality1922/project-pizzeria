@@ -30,6 +30,8 @@ class Cart {
     thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
 
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+    thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+    thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
   }
 
   initActions() {
@@ -95,7 +97,7 @@ class Cart {
 
     console.log(thisCart.dom.totalPrice);
     console.log('amount , cena koncowa:', thisCart.totalNumber, thisCart.totalPrice);
-    
+
   }
 
   remove(cartProduct) {
@@ -109,12 +111,40 @@ class Cart {
     thisCart.update();
   }
 
-  // sendOrder(){
-  //   const thisCart = this;
+  sendOrder() {
+    const thisCart = this;
+    const url = settings.db.url + '/' + settings.db.order;
 
-  //   const url = settings.db.url + '/' + settings.db.order;
+    const payload = {
+      address: thisCart.dom.address.value,
+      phone: thisCart.dom.phone.value,
+      totalNumber: thisCart.totalNumber,
+      subtotalPrice: thisCart.subtotalPrice,
+      deliveryFee: thisCart.deliveryFee,
+      totalPrice: thisCart.totalPrice,
+      products: [],
+    };
+    for (let cartProd of thisCart.products) {
+      payload.products.push(cartProd.getData());
+    }
 
-  // }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(url, options)
+      .then(function (response) {
+        return response.json();
+      }).then(function (parsedResponse) {
+        console.log('parsedResponse', parsedResponse);
+
+      });
+  }
 }
+
 
 export default Cart;

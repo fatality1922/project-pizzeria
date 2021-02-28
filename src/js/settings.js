@@ -69,7 +69,7 @@ export const settings = {
     defaultDeliveryFee: 20,
   },
   db: {
-    url: '//localhost:3131',
+    url: '//localhost:3555',
     product: 'product',
     order: 'order',
   },

@@ -47,12 +47,12 @@ class amountWidget {
       thisWidget.setValue(thisWidget.input.value);
     });
 
-    thisWidget.linkDecrease.addEventListener('click', function () {
+    thisWidget.linkDecrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(parseInt(thisWidget.input.value) - 1);
     });
 
-    thisWidget.linkIncrease.addEventListener('click', function () {
+    thisWidget.linkIncrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(parseInt(thisWidget.input.value) + 1);
     });
