@@ -10,21 +10,37 @@ const app = {
     const thisApp = this;
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
-
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
-    thisApp.activatePage(thisApp.pages[0].id);
 
-    // for (let link of thisApp.navLinks) {
-    //   link.addEventListener('click', function(event){
-    //     const clickedElement = this;
-    //     event.preventDefault();
+    const idFromHash = window.location.hash.replace('#/', '');
 
-    //     //get page id from href attribute
-    //     const id = clickedElement.getAttribute('href');
-    //     //run thisApp.activatePage with that id
 
-    //   });
-    // }
+    let pageMatchingHash = thisApp.pages[0].id;
+
+    for (let page of thisApp.pages){
+      if (page.id == idFromHash){
+        pageMatchingHash = page.id;
+        break;
+      }
+    }
+
+    thisApp.activatePage(idFromHash);
+
+    for (let link of thisApp.navLinks) {
+      link.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        //get page id from href attribute
+        const id = clickedElement.getAttribute('href').replace('#', '');
+        //run thisApp.activatePage with that id
+        thisApp.activatePage(id);
+
+        //change URL hash
+        window.location.hash = '#/' + id;
+        
+      });
+    }
   },
 
   activatePage: function (pageId) {
