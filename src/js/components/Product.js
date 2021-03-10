@@ -101,8 +101,6 @@ class Product {
     for (let paramId in thisProduct.data.params) {
       // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
       const param = thisProduct.data.params[paramId];
-      // console.log(paramId, param);
-
       // for every option in this category
       for (let optionId in param.options) {
         // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
@@ -136,12 +134,12 @@ class Product {
     }
 
     // update calculated price in the HTML
-    const priceSingle = price;
-    price *= thisProduct.amountWidget.value;
+    thisProduct.priceSingle = price;
+    thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
 
 
-    thisProduct.priceElem.innerHTML = price;
-    return priceSingle;
+    thisProduct.priceElem.innerHTML = thisProduct.priceSingle;
+    return thisProduct.priceSingle;
   }
 
   initAmountWidget() {
@@ -153,7 +151,7 @@ class Product {
     });
   }
 
-  addToCart(){
+  addToCart() {
     const thisProduct = this;
     thisProduct.name = thisProduct.data.name;
     thisProduct.amount = thisProduct.amountWidget.value;

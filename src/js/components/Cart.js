@@ -1,6 +1,6 @@
 import { settings, select, classNames, templates } from '../settings.js';
 import CartProduct from './CartProduct.js';
-import utils from '../utils.js';
+import {utils} from '../utils.js';
 
 class Cart {
   constructor(element) {
@@ -28,7 +28,6 @@ class Cart {
     thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
     thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
     thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
-
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
     thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
     thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
@@ -79,6 +78,7 @@ class Cart {
     for (let product of thisCart.products) {
       thisCart.totalNumber += product.amount;
       thisCart.subtotalPrice += product.price;
+      console.log('amount , product price ', thisCart.totalNumber,  product.price);
       console.log('amount2:', product.amount);
     }
     thisCart.totalPrice = 0;
@@ -95,8 +95,8 @@ class Cart {
     thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
     thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
 
-    console.log(thisCart.dom.totalPrice);
-    console.log('amount , cena koncowa:', thisCart.totalNumber, thisCart.totalPrice);
+    console.log('totalprice', thisCart.dom.totalPrice);
+    console.log('amount , subtotal ', thisCart.totalNumber, thisCart.subtotalPrice);
 
   }
 

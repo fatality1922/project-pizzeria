@@ -15,6 +15,7 @@ const app = {
     const idFromHash = window.location.hash.replace('#/', '');
 
 
+    // eslint-disable-next-line no-unused-vars
     let pageMatchingHash = thisApp.pages[0].id;
 
     for (let page of thisApp.pages){
