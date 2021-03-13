@@ -15,7 +15,6 @@ const app = {
     const idFromHash = window.location.hash.replace('#/', '');
 
 
-    // eslint-disable-next-line no-unused-vars
     let pageMatchingHash = thisApp.pages[0].id;
 
     for (let page of thisApp.pages){
@@ -25,7 +24,7 @@ const app = {
       }
     }
 
-    thisApp.activatePage(idFromHash);
+    thisApp.activatePage(pageMatchingHash);
 
     for (let link of thisApp.navLinks) {
       link.addEventListener('click', function(event){

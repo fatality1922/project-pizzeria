@@ -11,19 +11,19 @@ class Booking {
     thisBooking.initWidgets();
   }
 
-  render(element) {
+  render(bookingWidgetWrapper) {
     const thisBooking = this;
 
     const generatedHTML = templates.bookingWidget();
     thisBooking.dom = {};
-    thisBooking.dom.wrapper = element;
+    thisBooking.dom.wrapper = bookingWidgetWrapper;
     // generate dom from tempate
     const generatedDOM = utils.createDOMFromHTML(generatedHTML);
     //insert generated dom into wrapper
     thisBooking.dom.wrapper.appendChild(generatedDOM);
 
-    thisBooking.dom.peopleAmount = select.booking.peopleAmount;
-    thisBooking.dom.hoursAmount = select.booking.hoursAmount;
+    thisBooking.dom.peopleAmount =bookingWidgetWrapper.querySelector(select.booking.peopleAmount);
+    thisBooking.dom.hoursAmount = bookingWidgetWrapper.querySelector(select.booking.hoursAmount); 
   }
 
   initWidgets() {
