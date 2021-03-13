@@ -3,12 +3,12 @@ class BaseWidget {
     const thisWidget = this;
 
     thisWidget.dom = {};
-    thisWidget.dom.wrapper - wrapperElement;
+    thisWidget.dom.wrapper = wrapperElement;
 
     thisWidget.correctValue = initialValue;
   }
 
-  get Value (){
+  get value (){
     const thisWidget = this;
 
     return thisWidget.correctValue;
