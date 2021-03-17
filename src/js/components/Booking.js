@@ -11,6 +11,7 @@ class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.selectedTable = null;
   }
 
   getData() {
@@ -117,6 +118,11 @@ class Booking {
 
   updateDOM() {
     const thisBooking = this;
+    thisBooking.selectedTable = null;
+    const activeTable = thisBooking.dom.wrapper.querySelector('.'+ classNames.booking.tableSelected);
+    if (activeTable){
+      activeTable.classList.remove(classNames.booking.tableSelected);
+    }
 
     thisBooking.date = thisBooking.datePicker.value;
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
@@ -129,7 +135,7 @@ class Booking {
     ) {
       allAvailable = true;
     }
-
+    console.log('stoly', thisBooking.dom.tables);
     for (let table of thisBooking.dom.tables) {
       let tableId = table.getAttribute(settings.booking.tableIdAttribute);
       if (!isNaN(tableId)) {
@@ -143,6 +149,33 @@ class Booking {
       } else {
         table.classList.remove(classNames.booking.tableBooked);
       }
+    }
+  }
+
+  selectTable() {
+    const thisBooking = this;
+
+    for (let table of thisBooking.dom.tables) {
+
+      table.addEventListener('click', function () {
+        if (!table.classList.contains('booked')) {
+          if (!table.classList.contains('selected')) {
+            if (thisBooking.selectedTable) {
+              const activeTable = thisBooking.dom.wrapper.querySelector('.table[data-table= "' + thisBooking.selectedTable + '"]');
+              activeTable.classList.remove(classNames.booking.tableSelected);
+            }
+            table.classList.add(classNames.booking.tableSelected);
+            thisBooking.selectedTable = parseInt(table.getAttribute('data-table'));
+          } else {
+            table.classList.remove(classNames.booking.tableSelected);
+            thisBooking.selectedTable = null;
+          }
+        } else {
+          alert('Stolik zarezerwowany');
+        }
+      });
+
+      console.log('zarezerwowane', thisBooking.selectedTables);
     }
   }
 
@@ -163,7 +196,7 @@ class Booking {
     thisBooking.dom.datePicker = bookingWidgetWrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = bookingWidgetWrapper.querySelector(select.widgets.hourPicker.wrapper);
 
-    thisBooking.dom.tables = bookingWidgetWrapper.querySelector(select.booking.tables);
+    thisBooking.dom.tables = bookingWidgetWrapper.querySelectorAll(select.booking.tables);
 
   }
 
@@ -175,9 +208,11 @@ class Booking {
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
-    thisBooking.dom.wrapper.addEventListener('updated', function(){
+    thisBooking.dom.wrapper.addEventListener('updated', function () {
       thisBooking.updateDOM();
     });
+
+    thisBooking.selectTable();
 
   }
 }
