@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="vendor/range-slider.css">
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="header">
@@ -21,6 +25,7 @@
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
         </div>
         <div class="main-nav">
+          <a href="#home">Home</a>
           <a href="#order">Order</a>
           <a href="#booking">Booking</a>
         </div>
@@ -62,6 +67,94 @@
   </header>
 
   <div id="pages">
+
+    <section id="home">
+
+      <div class="home-wrapper container">
+        <div class="home-order-booking">
+          <div class="order box">
+            <div class="inner-box">
+              <h3>Order Online</h3>
+              <p>Delicious food delivered to your door</p>
+            </div>
+          </div>
+          <div class="booking box">
+            <div class="inner-box">
+              <h3>Book a Table</h3>
+              <p>Choose any table you want</p>
+            </div>
+          </div>
+        </div>
+        <div class="opening-hours-box">
+          <div class="hours">
+            <h3>Opening Hours:</h3>
+            <p>Tue-Sun, 12pm-12am</p>
+          </div>
+        </div>
+
+
+        <div class="carousel" data-flickity='{ "autoPlay": true }'>
+
+          <div class="carousel-cell">
+            <img src='../pictures/assets/pizza-3.jpg'>
+            <div class="carousel-text">
+              <h3>Amazing Service!</h3>
+              <p class="carousel-description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est interdum, bibendum odio vel,
+                lobortis felis. Curabitur at elementum nibh, a dictum lorem. Aliquam quis ultricies mauris. Sed non
+                nunc ac est laoreet finibus vitae eget justo. Nulla suscipit est sed ex mattis tempor. Curabitur eget
+                sem sed purus sagittis posuere venenatis eu ex. Duis placerat pretium orci. Nam a mollis arcu, in
+                lobortis
+                orci. Integer rhoncus scelerisque vehicula.
+              </p>
+              <p class="carousel-author">Margaret Thatcher</p>
+            </div>
+          </div>
+
+          <div class="carousel-cell">
+            <img src='../pictures/assets/pizza-3.jpg'>
+            <div class="carousel-text">
+              <h3>Ale sie obżarłem!</h3>
+              <p class="carousel-description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est interdum, bibendum odio vel,
+                lobortis felis. Curabitur at elementum nibh, a dictum lorem. Aliquam quis ultricies mauris. Sed non
+                nunc ac est laoreet finibus vitae eget justo. Nulla suscipit est sed ex mattis tempor. Curabitur eget
+                sem sed purus sagittis posuere venenatis eu ex. Duis placerat pretium orci. Nam a mollis arcu, in
+                lobortis
+                orci. Integer rhoncus scelerisque vehicula.
+              </p>
+              <p class="carousel-author">Ozzie Osbourne</p>
+            </div>
+          </div>
+
+          <div class="carousel-cell">
+            <img src='../pictures/assets/pizza-3.jpg'>
+            <div class="carousel-text">
+              <h3>Gorzała za mno chodzi od rana!</h3>
+              <p class="carousel-description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est interdum, bibendum odio vel,
+                lobortis felis. Curabitur at elementum nibh, a dictum lorem. Aliquam quis ultricies mauris. Sed non
+                nunc ac est laoreet finibus vitae eget justo. Nulla suscipit est sed ex mattis tempor. Curabitur eget
+                sem sed purus sagittis posuere venenatis eu ex. Duis placerat pretium orci. Nam a mollis arcu, in
+                lobortis
+                orci. Integer rhoncus scelerisque vehicula.
+              </p>
+              <p class="carousel-author">Ferdynand Kiepski</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="home-gallery">
+
+          <div class="gallery-image">
+            <img src="../pictures/assets/pizza-3.jpg" alt="pizza_img">
+
+          </div>
+        </div>
+
+    </section>
+
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -69,6 +162,8 @@
       <div class="booking-wrapper container"></div>
     </section>
   </div>
+
+
 
   <script id="template-booking-widget" type="text/x-handlebars-template">
     <div class="booking-widget">
@@ -246,7 +341,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/rangeslider.min.js"></script>
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
   <script src="js/app.js" type="module"></script>
 
 </body>
+
 </html>

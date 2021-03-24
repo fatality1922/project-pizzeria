@@ -4,7 +4,10 @@
 
 body {
   margin: 0;
-  background: lighten($color-dark, 75%);
+  background-image: url('https://images.pexels.com/photos/2260200/pexels-photo-2260200.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+  //background-size: cover;
+  background-attachment: fixed;
+  background-position: right center;
   font-family: $font-text;
   font-size: 14px;
   line-height: 1.7;
