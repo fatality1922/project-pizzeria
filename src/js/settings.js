@@ -109,7 +109,7 @@ export const settings = {
     defaultDeliveryFee: 20,
   },
   db: {
-    url: '//localhost:3555',
+    url: '//' + window.location.hostname + (window.location.hostname=='localhost' ? ':3555' : ''),
     product: 'product',
     order: 'order',
     booking: 'booking',

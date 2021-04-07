@@ -48,6 +48,7 @@
       position: absolute;
       transition: $transition;
       bottom: 5%;
+
       h3{
         margin-top: 40px;
         font-size: 30px;
@@ -55,6 +56,7 @@
 
       &:hover {
         bottom: 25%;
+
         p{
           display: block;
         }
@@ -79,30 +81,55 @@
 
 //carousel
 
-.carousel{
+.carousel {
+  margin-bottom: 30px;
+
   .carousel-cell {
-      display: flex;
-    // margin: 30px 0;
-    img{
-      //flex: 1;
-      width: 200px;
-      height: 200px;
-      background-image: url('../pictures/assets/pizza-3.jpg');
-      background-size: cover;
-      background-position: center;
-      margin-right: 30px;
+    display: flex;
+    width: 100%;
+    height: 200px;
+  }
+
+  .carousel-cell img {
+    padding-right: 20px;
+    height: 200px;
+    width: 200px; //???
+    object-fit: cover;
+  }
+
+  .carousel-cell .carousel-text {
+    flex: 1.5;
+    padding-left: 20px;
+    padding-right: 30px;
+    font-style: $font-text;
+
+    p {
+      font-weight: 100;
     }
-    
-    .carousel-text{
-      flex: 3;
-      font-family: $font-text;
+    .carousel-author {
+      font-style: oblique;
+      text-align: right;
     }
   }
-  
+
+  .carousel-cell .image img {
+    border-radius: $radius;
+    max-width: 100%;
+    min-height: 180px;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
+.flickity-page-dots {
+  bottom: -50px;
+}
+
+
+
+//gallery
 .home-gallery {
-  margin-top: 40px;
+  margin-top: 80px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -155,8 +182,9 @@
       &:hover .fa-heart {
         color: #ff0000;
       }
+
       &:hover .fa-share-alt {
-        color:#450ca0
+        color: #450ca0;
       }
     }
   }
